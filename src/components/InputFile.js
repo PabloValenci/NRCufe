@@ -14,10 +14,16 @@ export default class InputFile extends Component {
     // console.log(event.target.files[0]);
   };
 
-  fileUploadHandler = () => {
+  fileUploadHandler = async () => {
     const fd = new FormData();
     fd.append("file", this.state.selectedFile, this.state.selectedFile.name);
-    axios.post("http://localhost:3001/subir", fd).then(res => {
+    await axios
+      .post("http://localhost:3001/subir", fd)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => console.log(error));
+    axios.get("http://localhost:3001/info", fd).then(res => {
       console.log(res);
     });
   };
@@ -30,6 +36,7 @@ export default class InputFile extends Component {
             type="file"
             onChange={this.fileSelectedHandler}
             className="custom-file-input"
+            accept="text/xml"
             id="inputGroupFile04"
             aria-describedby="inputGroupFileAddon04"
           />

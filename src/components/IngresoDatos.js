@@ -93,7 +93,7 @@ export default class IngresoDatos extends Component {
           </div> */}
         </h4>
         <form onSubmit={this.crearCufe}>
-          <div className="mb-2">
+          <div className="mb-0">
             <label>Número de Factura</label>
             <input
               ref={this.numeroRef}
@@ -103,7 +103,7 @@ export default class IngresoDatos extends Component {
             />
           </div>
           <div className="row">
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>Fecha de Factura</label>
               <input
                 ref={this.fechaRef}
@@ -113,7 +113,7 @@ export default class IngresoDatos extends Component {
                 required
               />
             </div>
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>Hora de generación</label>
               <input
                 step="1"
@@ -127,7 +127,7 @@ export default class IngresoDatos extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>Valor Subtotal</label>
               <input
                 step="any"
@@ -137,7 +137,7 @@ export default class IngresoDatos extends Component {
                 required
               />
             </div>
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>Valor IVA</label>
               <input
                 step="any"
@@ -149,7 +149,7 @@ export default class IngresoDatos extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>Valor Impuesto 2</label>
               <input
                 step="any"
@@ -159,7 +159,7 @@ export default class IngresoDatos extends Component {
                 required
               />
             </div>
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>Valor Impuesto 3</label>
               <input
                 step="any"
@@ -170,7 +170,7 @@ export default class IngresoDatos extends Component {
               />
             </div>
           </div>
-          <div className="mb-2">
+          <div className="mb-0">
             <label>Total a Pagar</label>
             <input
               step="any"
@@ -181,7 +181,7 @@ export default class IngresoDatos extends Component {
             />
           </div>
           <div className="row">
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>NIT obligado a facturar</label>
               <input
                 ref={this.nitEmpresaRef}
@@ -190,7 +190,7 @@ export default class IngresoDatos extends Component {
                 required
               />
             </div>
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>Tipo de documento del Cliente</label>
               <select
                 ref={this.tipoIdRef}
@@ -211,7 +211,7 @@ export default class IngresoDatos extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>ID del cliente</label>
               <input
                 ref={this.idClienteRef}
@@ -220,7 +220,7 @@ export default class IngresoDatos extends Component {
                 required
               />
             </div>
-            <div className="col-md-6 mb-2">
+            <div className="col-md-6 mb-0">
               <label>Clave Técnica de Control (CTC)</label>
               <input
                 ref={this.ctcRef}
@@ -233,7 +233,7 @@ export default class IngresoDatos extends Component {
 
           {/* Si devuelve true se muestra el Alert */}
           {/* {this.state.validado && <Alert />} */}
-          <hr className="mb-3" />
+          <hr className="mb-1" />
           <button
             className="btn btn-primary btn-lg btn-block bg-blue text-white lh-100"
             type="submit"
