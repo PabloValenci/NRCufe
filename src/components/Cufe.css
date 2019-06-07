@@ -6,3 +6,10 @@
     /* background-color: #7ceb8f8e; */
     background-color: #f1adb38e;
 }
+
+div.overflow-auto {
+    background-color: white;
+    width: 420px;
+    height: 590px;
+    overflow: auto;
+}
