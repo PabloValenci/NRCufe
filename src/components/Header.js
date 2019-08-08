@@ -1,7 +1,14 @@
 import React from "react";
 import "./Header.css";
 
-export default function Header({ title, year, nombreEmpresa, texto }) {
+export default function Header({
+  title,
+  year,
+  nombreEmpresa,
+  numeroResolucion,
+  texto,
+  nombreClienteFactura
+}) {
   return (
     <header>
       <div className="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm row">
@@ -12,7 +19,7 @@ export default function Header({ title, year, nombreEmpresa, texto }) {
             href="https://numrot.com/#/inicio"
           >
             <img
-              className="mr-3"
+              className="mr-3 img-responsive"
               src="./LogoNR.png"
               alt={title}
               width="243"
@@ -22,7 +29,11 @@ export default function Header({ title, year, nombreEmpresa, texto }) {
         </div>
         <div className="col-8 lh-100 text-right">
           <h4 className="text-right text-black lh-100">{nombreEmpresa}</h4>
-          <p className=" text-black lh-100">{texto}</p>
+          {numeroResolucion !== "" ? (
+            <p className=" text-black lh-100">
+              {texto} <br /> {nombreClienteFactura}
+            </p>
+          ) : null}
         </div>
       </div>
     </header>

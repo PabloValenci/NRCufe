@@ -1,31 +1,70 @@
 import React, { Component } from "react";
 import uuid from "uuid";
 import InputFile from "./InputFile";
+import {
+  NumeroFactura,
+  Hora,
+  Fecha,
+  validarDecimal,
+  ID,
+  validarCufe
+} from "./Helper";
 
 export default class IngresoDatos extends Component {
   constructor() {
     super();
     this.state = {
       validado: false,
+      tipoUBL: "",
       numeroFactura: "",
       fechaFactura: "",
       horaFactura: "",
       idGeneradorFactura: "",
       idClienteFactura: "",
       subtotalFactura: 0,
+      codImp1: "01",
       ivaFactura: 0,
+      codImp2: "04",
+      icoFactura: 0,
+      codImp3: "03",
+      icaFactura: 0,
       totalFactura: 0,
       codigoFactura: "",
       xmlCufe: "",
       nombreEmpresa: "",
       numeroResolucion: "",
       fechaIResolucion: "",
+      fechaHResolucion: "",
       prefijoResolucion: "",
       desdeResolucion: "",
-      hastaResolucion: ""
+      hastaResolucion: "",
+      claveTecnica: "",
+      dianNumeroResolucion: "",
+      dianFechaIResolucion: "",
+      dianFechaHResolucion: "",
+      dianPrefijoResolucion: "",
+      dianDesdeResolucion: "",
+      dianHastaResolucion: "",
+      nombreClienteFactura: "",
+      tipoAmbiente: "",
+      validation: {
+        NumeroDeFactura: "",
+        FechaDeGeneracion: "",
+        HoraDeGeneracion: "",
+        Subtotal: "",
+        Iva: "",
+        Impuesto2: "",
+        Impuesto3: "",
+        Total: "",
+        NitObligado: "",
+        NitAdquiriente: "",
+        Cufe: ""
+      },
+      fileType: "Número de Documento"
     };
   }
   numeroRef = React.createRef();
+  ambienteRef = React.createRef();
   fechaRef = React.createRef();
   horaRef = React.createRef();
   subtotalRef = React.createRef();
@@ -33,41 +72,52 @@ export default class IngresoDatos extends Component {
   impuesto1Ref = React.createRef();
   impuesto2Ref = React.createRef();
   totalRef = React.createRef();
+  ambienteRef = React.createRef();
   nitEmpresaRef = React.createRef();
   tipoIdRef = React.createRef();
   idClienteRef = React.createRef();
   ctcRef = React.createRef();
+  tipoUblRef = React.createRef();
   // TODO Crear object
   crearCufe = event => {
     event.preventDefault(); // Detener la acción por defecto
-    const numero = this.numeroRef.current.value.replace(/-/g, ""),
-      fecha = String(this.fechaRef.current.value).replace(/-/g, ""),
-      hora = String(this.horaRef.current.value).replace(/:/g, ""),
+    const tipoubl = this.tipoUblRef.current.value,
+      numero = this.numeroRef.current.value.replace(/-/g, ""),
+      fecha = this.fechaRef.current.value,
+      hora = this.horaRef.current.value,
       subtotal = this.subtotalRef.current.value,
+      codimp1 = this.state.codImp1,
       iva = this.ivaRef.current.value,
+      codimp2 = this.state.codImp2,
       impuesto1 = this.impuesto1Ref.current.value,
+      codimp3 = this.state.codImp3,
       impuesto2 = this.impuesto2Ref.current.value,
       total = this.totalRef.current.value,
       nitEmpresa = this.nitEmpresaRef.current.value,
       tipoId = this.tipoIdRef.current.value,
       idCliente = this.idClienteRef.current.value,
       ctc = this.ctcRef.current.value,
+      tipoambiente = this.state.tipoAmbiente,
       idCUFE = uuid();
     if (numero !== "") {
-      // Revisar
       const registroCUFE = {
+        tipoubl,
         numero,
         fecha,
         hora,
         subtotal,
+        codimp1,
         iva,
+        codimp2,
         impuesto1,
+        codimp3,
         impuesto2,
         total,
         nitEmpresa,
         tipoId,
         idCliente,
         ctc,
+        tipoambiente,
         idCUFE
       };
       // TODO send
@@ -81,11 +131,17 @@ export default class IngresoDatos extends Component {
     }
   };
   handleData(
+    tipoUBL,
     numeroFactura,
     fechaFactura,
     horaFactura,
     subtotalFactura,
+    codImp1,
     ivaFactura,
+    codImp2,
+    icoFactura,
+    codImp3,
+    icaFactura,
     totalFactura,
     idGeneradorFactura,
     codigoFactura,
@@ -94,16 +150,34 @@ export default class IngresoDatos extends Component {
     nombreEmpresa,
     numeroResolucion,
     fechaIResolucion,
+    fechaHResolucion,
     prefijoResolucion,
     desdeResolucion,
-    hastaResolucion
+    hastaResolucion,
+    claveTecnica,
+    dianNumeroResolucion,
+    dianFechaIResolucion,
+    dianFechaHResolucion,
+    dianPrefijoResolucion,
+    dianDesdeResolucion,
+    dianHastaResolucion,
+    nombreClienteFactura,
+    tipoAmbiente,
+    validation,
+    fileType
   ) {
     this.setState({
+      tipoUBL: tipoUBL,
       numeroFactura: numeroFactura,
       fechaFactura: fechaFactura,
       horaFactura: horaFactura,
       subtotalFactura: subtotalFactura,
+      codImp1: codImp1,
       ivaFactura: ivaFactura,
+      codImp2: codImp2,
+      icoFactura: icoFactura,
+      codImp3: codImp3,
+      icaFactura: icaFactura,
       totalFactura: totalFactura,
       idGeneradorFactura: idGeneradorFactura,
       codigoFactura: codigoFactura,
@@ -112,23 +186,64 @@ export default class IngresoDatos extends Component {
       nombreEmpresa: nombreEmpresa,
       numeroResolucion: numeroResolucion,
       fechaIResolucion: fechaIResolucion,
+      fechaHResolucion: fechaHResolucion,
       prefijoResolucion: prefijoResolucion,
       desdeResolucion: desdeResolucion,
-      hastaResolucion: hastaResolucion
+      hastaResolucion: hastaResolucion,
+      claveTecnica: claveTecnica,
+      dianNumeroResolucion: dianNumeroResolucion,
+      dianFechaIResolucion: dianFechaIResolucion,
+      dianFechaHResolucion: dianFechaHResolucion,
+      dianPrefijoResolucion: dianPrefijoResolucion,
+      dianDesdeResolucion: dianDesdeResolucion,
+      dianHastaResolucion: dianHastaResolucion,
+      nombreClienteFactura: nombreClienteFactura,
+      tipoAmbiente: tipoAmbiente,
+      validation: validation,
+      fileType: fileType
     });
+    document.getElementById("titulodocumento").title =
+      String(this.state.fileType) === "Invoice" ||
+      String(this.state.fileType) === "fe:Invoice"
+        ? this.setState({ fileType: "Número de Factura" })
+        : this.setState({ fileType: "Número de Nota" });
     document.getElementById("numerodefactura").value = this.state.numeroFactura;
+    document.getElementById("tipoxml").value = this.state.tipoUBL;
     document.getElementById("fechadefactura").value = this.state.fechaFactura;
     document.getElementById("horadegeneracion").value = this.state.horaFactura;
-    document.getElementById("valorsubtotal").value = this.state.subtotalFactura;
-    document.getElementById("valoriva").value = this.state.ivaFactura;
-    document.getElementById("valorimpuesto2").value = "0.00";
-    document.getElementById("valorimpuesto3").value = "0.00";
-    document.getElementById("totalapagar").value = this.state.totalFactura;
+    document.getElementById("valorsubtotal").value = String(
+      this.state.subtotalFactura
+    );
+    document.getElementById("valoriva").value = String(this.state.ivaFactura);
+    document.getElementById("valorimpuesto2").value = this.state.icoFactura;
+    document.getElementById("valorimpuesto3").value = this.state.icaFactura;
+    document.getElementById("totalapagar").value = String(
+      this.state.totalFactura
+    );
+    // debugger;
+    document.getElementById("ambiente").value =
+      String(this.state.tipoAmbiente) === "2" ||
+      String(this.state.prefijoResolucion) === "PRUE"
+        ? "Pruebas"
+        : "Producción";
     document.getElementById(
       "nitobligado"
     ).value = this.state.idGeneradorFactura;
     document.getElementById("tipodocumento").value = this.state.codigoFactura;
     document.getElementById("nitcliente").value = this.state.idClienteFactura;
+    document.getElementById("ctc").value = this.state.claveTecnica;
+    console.log(`
+${this.state.numeroFactura}
+${this.state.fechaFactura}
+${this.state.horaFactura}
+${this.state.subtotalFactura}
+${this.state.ivaFactura}
+${this.state.totalFactura}
+${this.state.idGeneradorFactura}
+${this.state.idClienteFactura}
+${this.state.claveTecnica}`);
+    this.validateDataXML();
+    console.log(this.state.validation);
   }
   handleDataChange2() {
     this.props.onSelectData2(
@@ -136,11 +251,39 @@ export default class IngresoDatos extends Component {
       this.state.nombreEmpresa,
       this.state.numeroResolucion,
       this.state.fechaIResolucion,
+      this.state.fechaHResolucion,
       this.state.prefijoResolucion,
       this.state.desdeResolucion,
-      this.state.hastaResolucion
+      this.state.hastaResolucion,
+      this.state.dianNumeroResolucion,
+      this.state.dianFechaIResolucion,
+      this.state.dianFechaHResolucion,
+      this.state.dianPrefijoResolucion,
+      this.state.dianDesdeResolucion,
+      this.state.dianHastaResolucion,
+      this.state.nombreClienteFactura,
+      this.state.validation
     );
   }
+  validateDataXML = () => {
+    this.setState({
+      validation: {
+        NumeroDeFactura: NumeroFactura(this.state.numeroFactura),
+        FechaDeGeneracion: Fecha(this.state.fechaFactura),
+        HoraDeGeneracion: Hora(this.state.horaFactura),
+        Subtotal: validarDecimal(this.state.subtotalFactura),
+        Iva: validarDecimal(this.state.ivaFactura),
+        Total: validarDecimal(this.state.totalFactura),
+        NitObligado: ID(this.state.idGeneradorFactura, "", "NIT Facturador"),
+        NitAdquiriente: ID(
+          this.state.idClienteFactura,
+          this.state.codigoFactura,
+          "NIT Adquiriente"
+        ),
+        Cufe: validarCufe(this.state.xmlCufe)
+      }
+    });
+  };
   render() {
     return (
       <div className="col-md-7 order-md-1">
@@ -149,7 +292,7 @@ export default class IngresoDatos extends Component {
           <InputFile onSelectData={this.handleData.bind(this)} />
         </h4>
         <form onSubmit={this.crearCufe}>
-          <div className="mb-0">
+          {/* <div className="mb-0">
             <label>Número de Factura</label>
             <input
               id="numerodefactura"
@@ -158,7 +301,30 @@ export default class IngresoDatos extends Component {
               className="form-control"
               required
             />
+          </div> */}
+          <div className="row">
+            <div className="col-md-6 mb-0">
+              <label id="titulodocumento">{this.state.fileType}</label>
+              <input
+                id="numerodefactura"
+                ref={this.numeroRef}
+                type="text"
+                className="form-control"
+                required
+              />
+            </div>
+            <div className="col-md-6 mb-0">
+              <label>Tipo de XML</label>
+              <input
+                id="tipoxml"
+                ref={this.tipoUblRef}
+                readOnly="readonly"
+                type="text"
+                className="form-control"
+              />
+            </div>
           </div>
+
           <div className="row">
             <div className="col-md-6 mb-0">
               <label>Fecha de Factura</label>
@@ -192,7 +358,7 @@ export default class IngresoDatos extends Component {
                 id="valorsubtotal"
                 step="any"
                 ref={this.subtotalRef}
-                type="number"
+                type="string"
                 className="form-control"
                 required
               />
@@ -203,7 +369,7 @@ export default class IngresoDatos extends Component {
                 id="valoriva"
                 step="any"
                 ref={this.ivaRef}
-                type="number"
+                type="string"
                 className="form-control"
                 required
               />
@@ -216,7 +382,7 @@ export default class IngresoDatos extends Component {
                 id="valorimpuesto2"
                 step="any"
                 ref={this.impuesto1Ref}
-                type="number"
+                type="string"
                 className="form-control"
                 required
               />
@@ -227,26 +393,50 @@ export default class IngresoDatos extends Component {
                 id="valorimpuesto3"
                 step="any"
                 ref={this.impuesto2Ref}
-                type="number"
+                type="string"
                 className="form-control"
                 required
               />
             </div>
           </div>
-          <div className="mb-0">
+          {/* <div className="mb-0">
             <label>Total a Pagar</label>
             <input
               id="totalapagar"
               step="any"
               ref={this.totalRef}
-              type="number"
+              type="string"
               className="form-control"
               required
             />
+          </div> */}
+          <div className="row">
+            <div className="col-md-6 mb-0">
+              <label>Total a Pagar</label>
+              <input
+                id="totalapagar"
+                step="any"
+                ref={this.totalRef}
+                type="string"
+                className="form-control"
+                required
+              />
+            </div>
+            <div className="col-md-6 mb-0">
+              <label>Ambiente</label>
+              <input
+                id="ambiente"
+                step="any"
+                ref={this.ambienteRef}
+                readOnly="readonly"
+                type="string"
+                className="form-control"
+              />
+            </div>
           </div>
           <div className="row">
             <div className="col-md-6 mb-0">
-              <label>NIT obligado a facturar</label>
+              <label>NIT facturador electrónico</label>
               <input
                 id="nitobligado"
                 ref={this.nitEmpresaRef}
@@ -278,17 +468,17 @@ export default class IngresoDatos extends Component {
           </div>
           <div className="row">
             <div className="col-md-6 mb-0">
-              <label>ID del cliente</label>
+              <label>ID Adquiriente</label>
               <input
                 id="nitcliente"
                 ref={this.idClienteRef}
-                type="number"
+                type="any"
                 className="form-control"
                 required
               />
             </div>
             <div className="col-md-6 mb-0">
-              <label>Clave Técnica de Control (CTC)</label>
+              <label>Clave Técnica (CTC)</label>
               <input
                 id="ctc"
                 ref={this.ctcRef}

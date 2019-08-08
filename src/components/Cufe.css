@@ -7,9 +7,6 @@
     background-color: #f1adb38e;
 }
 
-div.overflow-auto {
-    background-color: white;
-    width: 420px;
-    height: 590px;
-    overflow: auto;
+.pad {
+    padding-left: 5px
 }
