@@ -82,7 +82,7 @@ export default class InputFile extends Component {
       this.state.selectedFile.name
     );
     await axios
-      .post("http://localhost:3700/api/upload-xml/", fd)
+      .post("http://52.91.241.177:3700/api/upload-xml/", fd)
       .then(res => {
         console.log(res.data.files);
         this.setState({
@@ -94,7 +94,7 @@ export default class InputFile extends Component {
 
   getDataFile = async () => {
     await axios
-      .get("http://localhost:3700/api/getinfo-xml/" + this.state.fileSearch)
+      .get("http://52.91.241.177:3700/api/getinfo-xml/" + this.state.fileSearch)
       .then(res => {
         console.log(res);
         console.log(this.state.fileType);
@@ -159,7 +159,7 @@ export default class InputFile extends Component {
     ) {
       await axios
         .get(
-          "http://localhost:3700/api/getinfo-js/" + this.state.prefijoResolucion
+          "http://52.91.241.177:3700/api/getinfo-js/" + this.state.prefijoResolucion
         )
         .then(res => {
           console.log(res);
@@ -211,7 +211,7 @@ export default class InputFile extends Component {
         });
     } else {
       await axios
-        .get("http://localhost:3700/api/getinfo-js/NOTA")
+        .get("http://52.91.241.177:3700/api/getinfo-js/NOTA")
         .then(res => {
           console.log(res);
           console.log(this.state.fileType);
@@ -248,7 +248,7 @@ export default class InputFile extends Component {
     ) {
       await axios
         .get(
-          "http://localhost:3700/api/getinfo-js/" + this.state.prefijoResolucion
+          "http://52.91.241.177:3700/api/getinfo-js/" + this.state.prefijoResolucion
         )
         .then(res => {
           console.log(res);
@@ -301,7 +301,7 @@ export default class InputFile extends Component {
         });
     } else {
       await axios
-        .get("http://localhost:3700/api/getinfo-js/NOTA")
+        .get("http://52.91.241.177:3700/api/getinfo-js/NOTA")
         .then(res => {
           console.log(res);
           console.log(this.state.fileType);
