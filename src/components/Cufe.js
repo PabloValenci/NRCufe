@@ -3,6 +3,7 @@ import "./Cufe.css";
 import QRCode from "qrcode.react";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
+import Rejections from "./Rejections";
 import { sha, qrGenerado } from "./Helper";
 
 export default function Cufe({
@@ -20,7 +21,8 @@ export default function Cufe({
   dianPrefijoResolucion,
   dianDesdeResolucion,
   dianHastaResolucion,
-  validation
+  validation,
+  reglas
 }) {
   const valor = [
     parseFloat(cufe.subtotal),
@@ -34,39 +36,10 @@ export default function Cufe({
   const total = parseFloat(cufe.total);
   const cufeGenerado = sha(cufe);
   const qr = qrGenerado(cufe, cufeGenerado);
-  // debugger;
-  // var sha1 = require("sha1");
-  // const concatenado =
-  //   cufe.numero +
-  //   cufe.fecha +
-  //   cufe.hora +
-  //   subtotal.toFixed(2) +
-  //   "01" +
-  //   iva.toFixed(2) +
-  //   "02" +
-  //   cufe.impuesto1 +
-  //   "03" +
-  //   cufe.impuesto2 +
-  //   total.toFixed(2) +
-  //   cufe.nitEmpresa +
-  //   cufe.tipoId +
-  //   cufe.idCliente +
-  //   cufe.ctc;
-  // console.log(concatenado, validation);
-
-  //   const qr = `NumFac: ${cufe.numero}
-  // FecFac: ${cufe.fecha}${cufe.hora}
-  // NitFac: ${cufe.nitEmpresa}
-  // DocAdq: ${cufe.idCliente}
-  // ValFac: ${subtotal.toFixed(2)}
-  // ValIva: ${iva.toFixed(2)}
-  // ValOtroIm: ${impuestos.toFixed(2)}
-  // ValFacImp: ${total.toFixed(2)}
-  // ${cufeGenerado}`;
 
   const colorAbrobacion =
     valor.toFixed(2) === total.toFixed(2) ? "bg-aprobado" : "bg-rechazado";
-  const validacionVAL = colorAbrobacion === "bg-rechazado" ? false : true;
+  // const validacionVAL = colorAbrobacion === "bg-rechazado" ? false : true;
   const colorAbrobacionXML =
     cufeGenerado === xmlCufe ? "bg-aprobado" : "bg-rechazado";
   const validacionCUFE = cufeGenerado === String(xmlCufe) ? true : false;
@@ -92,6 +65,12 @@ export default function Cufe({
       .reverse()
       .join("-")
   );
+  // var hola = reglas.Regla_FAU07.filter(
+  //   respuesta => respuesta.respuesta === false
+  // );
+  debugger;
+  console.log(reglas);
+
   return (
     <Accordion defaultActiveKey="0">
       <Card>
@@ -109,7 +88,7 @@ export default function Cufe({
             </div>
             <br />
             <div fontSize="1">
-              <ul className="pad">
+              {/* <ul className="pad">
                 {validacionVAL ? (
                   <span role="img" aria-label="check">
                     &#9989;
@@ -122,7 +101,7 @@ export default function Cufe({
                   </span>
                 )}
                 {` Suma de valores totales `}
-              </ul>
+              </ul> */}
               {xmlCufe !== "" ? (
                 <div>
                   <ul className="pad">
@@ -139,7 +118,7 @@ export default function Cufe({
                     )}
                     {` CUFE generado y CUFE xml`}
                   </ul>
-                  <ul className="pad">
+                  {/* <ul className="pad">
                     {validacionRES && validacionRES2 && validacionRES3 ? (
                       <span role="img" aria-label="check">
                         &#9989;
@@ -152,8 +131,9 @@ export default function Cufe({
                       </span>
                     )}
                     {` Resolución DIAN y resolución XML`}
-                  </ul>
-                  <br />
+                  </ul> */}
+                  <Rejections reglas={reglas}></Rejections>
+                  {/* <br />
                   {colorAbrobacionXML === "bg-rechazado" ? (
                     <ul className="pad">
                       {validation.NumeroDeFactura.indexOf("Correcto") !== 0 ? (
@@ -179,7 +159,7 @@ export default function Cufe({
                       )}
                       {validation.Iva.indexOf("Correcto") !== 0
                         ? (this.setState({ validado: true }),
-                          <li type="disc">{validation.Iva}</li>)
+                          (<li type="disc">{validation.Iva}</li>))
                         : ""}
                       {validation.Total.indexOf("Correcto") !== 0 ? (
                         <li type="disc">{validation.Total}</li>
@@ -204,7 +184,7 @@ export default function Cufe({
                     </ul>
                   ) : (
                     ""
-                  )}
+                  )} */}
                   <br />
                   {!validacionCUFE ? (
                     <span>
@@ -301,7 +281,13 @@ export default function Cufe({
       <hr />
       <div className="center-block">
         <a
-          href="https://muisca.dian.gov.co/WebFacturaelectronica/paginas/VerificarFacturaElectronicaExterno.faces"
+          href={`${
+            cufe.fileType === "fe:Invoice"
+              ? "https://muisca.dian.gov.co/WebFacturaelectronica/paginas/VerificarFacturaElectronicaExterno.faces"
+              : `https://catalogo-vpfe${
+                  cufe.tipoambiente === "1" ? "" : "-hab"
+                }.dian.gov.co/document/searchqr?documentkey=${xmlCufe}`
+          }`}
           target="_blank"
           rel="noopener noreferrer"
         >

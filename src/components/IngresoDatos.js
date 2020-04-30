@@ -60,7 +60,8 @@ export default class IngresoDatos extends Component {
         NitAdquiriente: "",
         Cufe: ""
       },
-      fileType: "Número de Documento"
+      fileType: "",
+      fileType2: "Número de Documento"
     };
   }
   numeroRef = React.createRef();
@@ -98,6 +99,7 @@ export default class IngresoDatos extends Component {
       idCliente = this.idClienteRef.current.value,
       ctc = this.ctcRef.current.value,
       tipoambiente = this.state.tipoAmbiente,
+      fileType = this.state.fileType,
       idCUFE = uuid();
     if (numero !== "") {
       const registroCUFE = {
@@ -118,6 +120,7 @@ export default class IngresoDatos extends Component {
         idCliente,
         ctc,
         tipoambiente,
+        fileType,
         idCUFE
       };
       // TODO send
@@ -164,7 +167,8 @@ export default class IngresoDatos extends Component {
     nombreClienteFactura,
     tipoAmbiente,
     validation,
-    fileType
+    fileType,
+    reglas
   ) {
     this.setState({
       tipoUBL: tipoUBL,
@@ -200,13 +204,14 @@ export default class IngresoDatos extends Component {
       nombreClienteFactura: nombreClienteFactura,
       tipoAmbiente: tipoAmbiente,
       validation: validation,
-      fileType: fileType
+      fileType: fileType,
+      reglas: reglas
     });
     document.getElementById("titulodocumento").title =
       String(this.state.fileType) === "Invoice" ||
       String(this.state.fileType) === "fe:Invoice"
-        ? this.setState({ fileType: "Número de Factura" })
-        : this.setState({ fileType: "Número de Nota" });
+        ? this.setState({ fileType2: "Número de Factura" })
+        : this.setState({ fileType2: "Número de Nota" });
     document.getElementById("numerodefactura").value = this.state.numeroFactura;
     document.getElementById("tipoxml").value = this.state.tipoUBL;
     document.getElementById("fechadefactura").value = this.state.fechaFactura;
@@ -262,7 +267,8 @@ ${this.state.claveTecnica}`);
       this.state.dianDesdeResolucion,
       this.state.dianHastaResolucion,
       this.state.nombreClienteFactura,
-      this.state.validation
+      this.state.validation,
+      this.state.reglas
     );
   }
   validateDataXML = () => {
@@ -270,7 +276,7 @@ ${this.state.claveTecnica}`);
       validation: {
         NumeroDeFactura: NumeroFactura(this.state.numeroFactura),
         FechaDeGeneracion: Fecha(this.state.fechaFactura),
-        HoraDeGeneracion: Hora(this.state.horaFactura),
+        HoraDeGeneracion: Hora(this.state.horaFactura, this.state.tipoUBL),
         Subtotal: validarDecimal(this.state.subtotalFactura),
         Iva: validarDecimal(this.state.ivaFactura),
         Total: validarDecimal(this.state.totalFactura),
@@ -283,6 +289,7 @@ ${this.state.claveTecnica}`);
         Cufe: validarCufe(this.state.xmlCufe)
       }
     });
+    console.log(this.state.validation.Reglas);
   };
   render() {
     return (
@@ -304,7 +311,7 @@ ${this.state.claveTecnica}`);
           </div> */}
           <div className="row">
             <div className="col-md-6 mb-0">
-              <label id="titulodocumento">{this.state.fileType}</label>
+              <label id="titulodocumento">{this.state.fileType2}</label>
               <input
                 id="numerodefactura"
                 ref={this.numeroRef}
@@ -327,7 +334,7 @@ ${this.state.claveTecnica}`);
 
           <div className="row">
             <div className="col-md-6 mb-0">
-              <label>Fecha de Factura</label>
+              <label>Fecha de Documento</label>
               <input
                 id="fechadefactura"
                 ref={this.fechaRef}
@@ -446,7 +453,7 @@ ${this.state.claveTecnica}`);
               />
             </div>
             <div className="col-md-6 mb-0">
-              <label>Tipo de documento del Cliente</label>
+              <label>Tipo ID Adquiriente</label>
               <select
                 id="tipodocumento"
                 ref={this.tipoIdRef}
@@ -478,7 +485,7 @@ ${this.state.claveTecnica}`);
               />
             </div>
             <div className="col-md-6 mb-0">
-              <label>Clave Técnica (CTC)</label>
+              <label>Clave Técnica (CTC) - PIN (Notas)</label>
               <input
                 id="ctc"
                 ref={this.ctcRef}

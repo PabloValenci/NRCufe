@@ -19,11 +19,16 @@ export default function Cufes({
   dianPrefijoResolucion,
   dianDesdeResolucion,
   dianHastaResolucion,
-  validation
+  validation,
+  reglas
 }) {
   return (
     <div className="col-md-5 order-md-2 mb-4 overflow-auto">
-      <Badge timeNow={timeNow} numeroResolucion={numeroResolucion} />
+      <Badge
+        cufes={cufes}
+        timeNow={timeNow}
+        numeroResolucion={numeroResolucion}
+      />
       <ul className="list-group mb-3">
         {cufes.map(cufe => (
           <Cufe
@@ -43,6 +48,7 @@ export default function Cufes({
             dianDesdeResolucion={dianDesdeResolucion}
             dianHastaResolucion={dianHastaResolucion}
             validation={validation}
+            reglas={reglas}
           />
         ))}
       </ul>

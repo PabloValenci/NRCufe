@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Badge({ timeNow, numeroResolucion }) {
+export default function Badge({ cufes, timeNow, numeroResolucion }) {
   return (
     <div>
       <h4 className="d-flex justify-content-between align-items-center mb-3">
@@ -8,10 +8,7 @@ export default function Badge({ timeNow, numeroResolucion }) {
           Cufe Generado{" "}
           {numeroResolucion !== "" ? <small>{`${timeNow}`}</small> : null}
         </span>
-
-        <span className="badge badge-secondary badge-pill bg-purple text-white lh-100">
-          {/* <p>Consulte su Factura Electrónica</p> */}
-        </span>
+        <span className="badge badge-secondary badge-pill bg-purple text-white lh-100" />
       </h4>
     </div>
   );

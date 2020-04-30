@@ -26,7 +26,8 @@ export default class Main extends Component {
       dianPrefijoResolucion: "",
       dianDesdeResolucion: "",
       dianHastaResolucion: "",
-      validation: {}
+      validation: {},
+      reglas: {}
     };
   }
   agregarCUFE = cufe => {
@@ -53,7 +54,8 @@ export default class Main extends Component {
     dianDesdeResolucion,
     dianHastaResolucion,
     nombreClienteFactura,
-    validation
+    validation,
+    reglas
   ) => {
     this.setState({
       xmlCufe: xmlCufe,
@@ -90,7 +92,8 @@ export default class Main extends Component {
         " hasta " +
         hastaResolucion,
       nombreClienteFactura: "Adquiriente: " + nombreClienteFactura,
-      validation: validation
+      validation: validation,
+      reglas: reglas
     });
   };
 
@@ -131,6 +134,7 @@ export default class Main extends Component {
             dianDesdeResolucion={this.state.dianDesdeResolucion}
             dianHastaResolucion={this.state.dianHastaResolucion}
             validation={this.state.validation}
+            reglas={this.state.reglas}
           />
         </div>
         <Footer company={company} year={year} />

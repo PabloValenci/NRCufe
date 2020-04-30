@@ -25,17 +25,40 @@ export function Fecha(data) {
   }
 }
 
-export function Hora(data) {
+export function Hora(data, ubl) {
   var regEx = /^(?:2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]$/;
-  if (data === "") {
-    return "No existe hora de generación";
-  } else {
-    if (!data.match(regEx)) {
-      return "Hora con formato incorrecto"; // Invalid format
-    } else {
-      return "Correcto";
-    }
+  var regExVP = /(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)-(?:[01]\d|2[0-3]):(?:[0-5]\d)/;
+  var message = "";
+
+  switch (ubl) {
+    case "UBL 2.0 FE Versión 1":
+      if (data === "") {
+        message = "No existe hora de generación";
+      } else {
+        if (!data.match(regEx)) {
+          message = "Hora con formato incorrecto"; // Invalid format
+        } else {
+          message = "Correcto";
+        }
+      }
+      break;
+
+    case "UBL 2.1 Validación previa":
+      if (data === "") {
+        message = "No existe hora de generación";
+      } else {
+        if (!data.match(regExVP)) {
+          message = "Hora con formato incorrecto"; // Invalid format
+        } else {
+          message = "Correcto";
+        }
+      }
+      break;
+    default:
+      console.log("Error " + ubl);
+      break;
   }
+  return message;
 }
 
 export function validarDecimal(valor) {
@@ -85,12 +108,12 @@ export function validarCufe(cufe) {
     return "No existe cufe asociado";
   } else {
     if (!regEx.test(cufe)) {
-      return "Cufe no tiene el formato correcto, se deben revisar caracteres especiales";
+      return "CUFE no tiene el formato correcto, se deben revisar caracteres especiales";
     } else {
-      if (cufe.length <= 40) {
+      if (cufe.length <= 96) {
         return "Correcto";
       } else {
-        return "Cufe sobrepasa los 40 digitos";
+        return "CUFE del XML sobrepasa los 40 digitos";
       }
     }
   }
@@ -128,11 +151,11 @@ export function sha(cufe) {
         cufe.fecha +
         cufe.hora +
         subtotal.toFixed(2) +
-        cufe.codimp1 +
+        "01" +
         iva.toFixed(2) +
-        cufe.codimp2 +
+        "04" +
         cufe.impuesto1 +
-        cufe.codimp3 +
+        "03" +
         cufe.impuesto2 +
         total.toFixed(2) +
         cufe.nitEmpresa +
@@ -141,15 +164,19 @@ export function sha(cufe) {
         cufe.tipoambiente;
       sha_ = sha384(concatenado, "utf-8").toString("hex");
       break;
+
     default:
       console.log("Error " + cufe.tipoubl);
       break;
   }
+  debugger;
   console.log(concatenado);
   return sha_;
 }
 
 export function qrGenerado(cufe, cufeGenerado) {
+  var ambiente = cufe.tipoambiente === "1" ? "" : "-hab";
+  const fechaE = String(cufe.fecha).replace(/-/g, "");
   const subtotal = parseFloat(cufe.subtotal);
   const total = parseFloat(cufe.total);
   const iva = parseFloat(cufe.iva);
@@ -157,10 +184,7 @@ export function qrGenerado(cufe, cufeGenerado) {
   switch (cufe.tipoubl) {
     case "UBL 2.0 FE Versión 1":
       qr = `NumFac: ${cufe.numero}
-FecFac: ${String(cufe.fecha).replace(/-/g, "")}${String(cufe.hora).replace(
-        /:/g,
-        ""
-      )}
+FecFac: ${fechaE}${String(cufe.hora).replace(/:/g, "")}
 NitFac: ${cufe.nitEmpresa}
 DocAdq: ${cufe.idCliente}
 ValFac: ${subtotal.toFixed(2)}
@@ -171,7 +195,8 @@ ${cufeGenerado}`;
       break;
 
     case "UBL 2.1 Validación previa":
-      qr = `NumFac: ${cufe.numero}
+      if (cufe.fileType === "Número de Factura") {
+        qr = `NumFac: ${cufe.numero}
 FecFac: ${cufe.fecha}
 HorFac: ${cufe.hora}
 NitFac: ${cufe.nitEmpresa}
@@ -180,7 +205,17 @@ ValFac: ${subtotal.toFixed(2)}
 ValIva: ${iva.toFixed(2)}
 ValOtroIm: ${impuestos.toFixed(2)}
 ValTolFac: ${total.toFixed(2)}
-CUFE: ${cufeGenerado}`;
+CUFE: ${cufeGenerado}
+URL: https://catalogo-vpfe${ambiente}.dian.gov.co/document/searchqr?documentkey=${cufeGenerado}`;
+      } else {
+        qr = `NumNota: ${cufe.numero}
+NitFacturador: ${cufe.nitEmpresa}
+NitAdquiriente: ${cufe.idCliente}
+FecNota: ${cufe.fecha}
+ValTolNota: ${total.toFixed(2)}
+CUDE: ${cufeGenerado}
+URL: https://catalogo-vpfe${ambiente}.dian.gov.co/document/searchqr?documentkey=${cufeGenerado}`;
+      }
       break;
     default:
       console.log("Error " + cufe.tipoubl);
