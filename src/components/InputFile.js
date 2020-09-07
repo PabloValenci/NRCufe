@@ -54,10 +54,10 @@ export default class InputFile extends Component {
         Total: "",
         NitObligado: "",
         NitAdquiriente: "",
-        Cufe: ""
+        Cufe: "",
       },
       fileType: "",
-      reglas: {}
+      reglas: {},
     };
   }
 
@@ -66,10 +66,10 @@ export default class InputFile extends Component {
     // this.handleDataChange();
   }
 
-  fileSelectedHandler = event => {
+  fileSelectedHandler = (event) => {
     event.preventDefault(); // Detener la acción por defecto
     this.setState({
-      selectedFile: event.target.files[0]
+      selectedFile: event.target.files[0],
     });
     console.log(event.target.files[0]);
   };
@@ -82,23 +82,22 @@ export default class InputFile extends Component {
       this.state.selectedFile.name
     );
     await axios
-      .post("http://52.91.241.177:3700/api/upload-xml/", fd)
-      .then(res => {
+      .post("http://localhost:3700/api/upload-xml/", fd)
+      .then((res) => {
         console.log(res.data.files);
         this.setState({
-          fileSearch: String(res.data.files)
+          fileSearch: String(res.data.files),
         });
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   getDataFile = async () => {
     await axios
-      .get("http://52.91.241.177:3700/api/getinfo-xml/" + this.state.fileSearch)
-      .then(res => {
+      .get("http://localhost:3700/api/getinfo-xml/" + this.state.fileSearch)
+      .then((res) => {
         console.log(res);
         console.log(this.state.fileType);
-        debugger;
         console.log(res.data);
 
         this.setState({
@@ -138,14 +137,15 @@ export default class InputFile extends Component {
             Regla_FAU04: res.data.rechazo_FAU04,
             Regla_FAU06: res.data.rechazo_FAU06,
             Regla_FAU08: res.data.rechazo_FAU08,
-            Regla_FAU14: res.data.rechazo_FAU14
-          }
+            Regla_FAU14: res.data.rechazo_FAU14,
+            Regla_FAS07: res.data.rechazo_FAS07,
+          },
         });
 
         console.log(this.state.numeroFactura, this.state.reglas);
         // debugger;
       })
-      .catch(error => {
+      .catch((error) => {
         if (this.state.selectedFile !== null) {
           alert("Error de conexión al servidor" + error);
         }
@@ -159,9 +159,9 @@ export default class InputFile extends Component {
     ) {
       await axios
         .get(
-          "http://52.91.241.177:3700/api/getinfo-js/" + this.state.prefijoResolucion
+          "http://localhost:3700/api/getinfo-js/" + this.state.prefijoResolucion
         )
-        .then(res => {
+        .then((res) => {
           console.log(res);
           console.log(this.state.fileType);
           for (let i = 0; i < res.data.respuesta.length; i++) {
@@ -189,7 +189,7 @@ export default class InputFile extends Component {
                   ),
                   dianPrefijoResolucion: String(res.data.respuesta[i].prefijo),
                   dianDesdeResolucion: String(res.data.respuesta[i].rangoDesde),
-                  dianHastaResolucion: String(res.data.respuesta[i].rangoHasta)
+                  dianHastaResolucion: String(res.data.respuesta[i].rangoHasta),
                 });
                 console.log(
                   parseInt(res.data.respuesta[i].rangoDesde),
@@ -201,7 +201,7 @@ export default class InputFile extends Component {
           }
           this.handleDataChange();
         })
-        .catch(error => {
+        .catch((error) => {
           if (this.state.selectedFile !== null) {
             alert(
               "Error de conexión al servidor, por favor intenta nuevamente: " +
@@ -211,8 +211,8 @@ export default class InputFile extends Component {
         });
     } else {
       await axios
-        .get("http://52.91.241.177:3700/api/getinfo-js/NOTA")
-        .then(res => {
+        .get("http://localhost:3700/api/getinfo-js/NOTA")
+        .then((res) => {
           console.log(res);
           console.log(this.state.fileType);
           this.setState({
@@ -222,12 +222,12 @@ export default class InputFile extends Component {
             dianFechaHResolucion: "",
             dianPrefijoResolucion: "",
             dianDesdeResolucion: "",
-            dianHastaResolucion: ""
+            dianHastaResolucion: "",
           });
           // debugger;
           this.handleDataChange();
         })
-        .catch(error => {
+        .catch((error) => {
           if (this.state.selectedFile !== null) {
             alert(
               "Error de conexión al servidor, por favor intenta nuevamente: " +
@@ -248,9 +248,9 @@ export default class InputFile extends Component {
     ) {
       await axios
         .get(
-          "http://52.91.241.177:3700/api/getinfo-js/" + this.state.prefijoResolucion
+          "http://localhost:3700/api/getinfo-js/" + this.state.prefijoResolucion
         )
-        .then(res => {
+        .then((res) => {
           console.log(res);
 
           console.log(this.state.fileType);
@@ -279,7 +279,7 @@ export default class InputFile extends Component {
                   ),
                   dianPrefijoResolucion: String(res.data.respuesta[i].prefijo),
                   dianDesdeResolucion: String(res.data.respuesta[i].rangoDesde),
-                  dianHastaResolucion: String(res.data.respuesta[i].rangoHasta)
+                  dianHastaResolucion: String(res.data.respuesta[i].rangoHasta),
                 });
                 console.log(
                   parseInt(res.data.respuesta[i].rangoDesde),
@@ -291,7 +291,7 @@ export default class InputFile extends Component {
           }
           this.handleDataChange();
         })
-        .catch(error => {
+        .catch((error) => {
           if (this.state.selectedFile !== null) {
             alert(
               "Error de conexión al servidor, por favor intenta nuevamente: " +
@@ -301,23 +301,52 @@ export default class InputFile extends Component {
         });
     } else {
       await axios
-        .get("http://52.91.241.177:3700/api/getinfo-js/NOTA")
-        .then(res => {
+        .get(
+          "http://localhost:3700/api/getinfo-js/" + this.state.prefijoResolucion
+        )
+        .then((res) => {
           console.log(res);
           console.log(this.state.fileType);
-          this.setState({
-            claveTecnica: "00842",
-            dianNumeroResolucion: "",
-            dianFechaIResolucion: "",
-            dianFechaHResolucion: "",
-            dianPrefijoResolucion: "",
-            dianDesdeResolucion: "",
-            dianHastaResolucion: ""
-          });
+
+          for (let i = 0; i < res.data.respuesta.length; i++) {
+            if (
+              this.state.idGeneradorFactura === res.data.respuesta[i].nitEmpresa
+            ) {
+              const numFac = this.state.numeroFactura;
+              const prefi = this.state.prefijoResolucion;
+              const numFac2 = parseInt(numFac.replace(prefi, ""));
+
+              if (
+                parseInt(res.data.respuesta[i].rangoDesde) <= numFac2 &&
+                numFac2 <= parseInt(res.data.respuesta[i].rangoHasta)
+              ) {
+                this.setState({
+                  claveTecnica: String(res.data.respuesta[i].ctc),
+                  dianNumeroResolucion: String(
+                    res.data.respuesta[i].numeroResolucion
+                  ),
+                  dianFechaIResolucion: String(
+                    res.data.respuesta[i].fechaDesde
+                  ),
+                  dianFechaHResolucion: String(
+                    res.data.respuesta[i].fechaHasta
+                  ),
+                  dianPrefijoResolucion: String(res.data.respuesta[i].prefijo),
+                  dianDesdeResolucion: String(res.data.respuesta[i].rangoDesde),
+                  dianHastaResolucion: String(res.data.respuesta[i].rangoHasta),
+                });
+                console.log(
+                  parseInt(res.data.respuesta[i].rangoDesde),
+                  numFac2,
+                  parseInt(res.data.respuesta[i].rangoHasta)
+                );
+              }
+            }
+          }
           // debugger;
           this.handleDataChange();
         })
-        .catch(error => {
+        .catch((error) => {
           if (this.state.selectedFile !== null) {
             alert(
               "Error de conexión al servidor, por favor intenta nuevamente: " +

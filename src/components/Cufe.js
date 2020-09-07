@@ -43,28 +43,28 @@ export default function Cufe({
   const colorAbrobacionXML =
     cufeGenerado === xmlCufe ? "bg-aprobado" : "bg-rechazado";
   const validacionCUFE = cufeGenerado === String(xmlCufe) ? true : false;
-  const validacionRES =
-    String(desdeResolucion) === String(dianDesdeResolucion) ? true : false;
-  const validacionRES2 =
-    String(fechaHResolucion) ===
-    String(
-      dianFechaHResolucion
-        .split("/")
-        .reverse()
-        .join("-")
-    )
-      ? true
-      : false;
-  const validacionRES3 =
-    String(numeroResolucion) === String(dianNumeroResolucion) ? true : false;
-  console.log(validacionRES, validacionRES2, validacionRES3);
-  console.log(
-    fechaHResolucion,
-    dianFechaHResolucion
-      .split("/")
-      .reverse()
-      .join("-")
-  );
+  // const validacionRES =
+  //   String(desdeResolucion) === String(dianDesdeResolucion) ? true : false;
+  // const validacionRES2 =
+  //   String(fechaHResolucion) ===
+  //   String(
+  //     dianFechaHResolucion
+  //       .split("/")
+  //       .reverse()
+  //       .join("-")
+  //   )
+  //     ? true
+  //     : false;
+  // const validacionRES3 =
+  //   String(numeroResolucion) === String(dianNumeroResolucion) ? true : false;
+  // console.log(validacionRES, validacionRES2, validacionRES3);
+  // console.log(
+  //   fechaHResolucion,
+  //   dianFechaHResolucion
+  //     .split("/")
+  //     .reverse()
+  //     .join("-")
+  // );
   // var hola = reglas.Regla_FAU07.filter(
   //   respuesta => respuesta.respuesta === false
   // );
@@ -218,7 +218,7 @@ export default function Cufe({
               <ul>
                 <h6>Datos XML</h6>
               </ul>
-              <ul>
+              {/* <ul>
                 <strong>No. Resolución: </strong>
                 {numeroResolucion}
               </ul>
@@ -273,7 +273,7 @@ export default function Cufe({
               <ul>
                 <strong>Hasta: </strong>
                 {dianHastaResolucion}
-              </ul>
+              </ul> */}
             </small>
           </Card.Body>
         </Accordion.Collapse>

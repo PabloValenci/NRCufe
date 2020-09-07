@@ -123,7 +123,7 @@ export function sha(cufe) {
   const subtotal = parseFloat(cufe.subtotal);
   const total = parseFloat(cufe.total);
   const iva = parseFloat(cufe.iva);
-  // debugger;
+  //debugger;
   switch (cufe.tipoubl) {
     case "UBL 2.0 FE Versión 1":
       concatenado =

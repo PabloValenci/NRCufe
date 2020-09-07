@@ -26,6 +26,7 @@ export default function Rejections({ reglas }) {
           <span role="img" aria-label="check">
             &#10060;
             <strong>Regla FAU06: </strong>
+            {Object.keys(reglas.Regla_FAU06).length}
             {`El total con impuesto @FAU06 ${reglas.Regla_FAU06.valor} NO coincide con la suma del tag @FAU02 ${reglas.Regla_FAU06.valor2} más la sumatoria de todos los tags @FAS02 ${reglas.Regla_FAU06.totalLineas}`}
           </span>
         ) : null}
@@ -35,7 +36,7 @@ export default function Rejections({ reglas }) {
           <span role="img" aria-label="check">
             &#10060;
             <strong>Regla FAU08: </strong>
-            {`El descuento total informado @FAU08 ${reglas.Regla_FAU08.valor} NO coincide con la suma de todos los descuentos aplicados @FAQ07 ${reglas.Regla_FAU06.totalLineas}`}
+            {`El descuento total informado @FAU08 ${reglas.Regla_FAU08.valor} NO coincide con la suma de todos los descuentos aplicados @FAQ07 ${reglas.Regla_FAU08.totalLineas}`}
           </span>
         ) : null}
       </ul>
@@ -48,6 +49,16 @@ export default function Rejections({ reglas }) {
           </span>
         ) : null}
       </ul>
+      {/* <ul className="pad">
+        {reglas.Regla_FAS07.respuesta === false ||
+        reglas.Regla_FAS07 === "undefined" ? (
+          <span role="img" aria-label="check">
+            &#10060;
+            <strong>Regla FAS07: </strong>
+            {`El valorBrutoConTributos @FAU06 ${reglas.Regla_FAU14.valorBrutoConTributos} menos el valorDescuentos @FAU08 ${reglas.Regla_FAU14.valorDescuentos} más el valorCargos @FAU10 ${reglas.Regla_FAU14.valorCargos} menos valorAnticipos @FAU12 ${reglas.Regla_FAU14.valorAnticipos} no es igual al valorTotal @FAU14 ${reglas.Regla_FAU14.valorTotal}`}
+          </span>
+        ) : null}
+      </ul> */}
     </div>
   );
 }
